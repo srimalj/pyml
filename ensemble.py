@@ -23,7 +23,8 @@ class Ensemble:
     def fit(self, X, y):
         for learner in self.learners:
             learner.fit(X, y)
-        self.nclasses = np.argmax(y) + 1
+        self.nclasses = np.max(y) + 1
+        return self
     
     def _compute_predictions(self, X):
         predictions = []
@@ -35,8 +36,6 @@ class Ensemble:
         predictions = self._compute_predictions(X)
         n,p = X.shape
         freqs = self._compute_freq(predictions, n)
-        print predictions
-        print freqs
         probabilities = self._freq_to_prob(freqs)
         return probabilities
 
