@@ -66,10 +66,10 @@ class Grid2d():
     
     def predict_row(self, x):
         estimator = self.get_estimator(x[0], x[1])
-        return estimator.predict(x)
+        return estimator.predict(x.reshape(1,-1))
 
     def predict(self, X):
-        [self.predict_row(x) for x in X]
+        return [self.predict_row(x) for x in X]
             
     
      #def predict_best_k(self, X,  k):
