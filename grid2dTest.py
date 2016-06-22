@@ -25,10 +25,26 @@ class grid2dTest (unittest.TestCase):
         self.assertEqual(grid2d.partition_index(limits, 0.6), 2)
         self.assertEqual(grid2d.partition_index(limits, 0.3), 1)
 
-    # def testBestNPredictions(self):
-    #     bestK = grid2d.bestNPredictions([0.1, 0.2, 0.3, 0.4, 0.5], range(0,6), 3)
-    #     print(bestK)
-        #self.assertEqual([0,1,2], [0, 1, 2])
+    def testBestNPredictions(self):
+        probabilities = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
+        classes = np.array(range(0, len(probabilities)))
+        bestK = grid2d.bestNPredictions(probabilities, classes, 3)
+        self.assertTrue(np.array_equal(bestK, np.array([4, 3 ,2])))
+
+        probabilities = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
+        classes = np.array([4, 3, 2, 1, 0])
+        bestK = grid2d.bestNPredictions(probabilities, classes, 3)
+        self.assertTrue(np.array_equal(bestK, np.array([0, 1 ,2])))
+
+        probabilities = np.array([0.1, 0.8, 0.3, 1.4, 0.5])
+        classes = np.array(range(0, len(probabilities)))
+        bestK = grid2d.bestNPredictions(probabilities, classes, 3)
+        self.assertTrue(np.array_equal(bestK, np.array([3, 1, 4])))
+
+        probabilities = np.array([0.1, 0.8, 0.3, 1.4, 0.5])
+        classes = np.array([4, 3, 2, 1, 0])
+        bestK = grid2d.bestNPredictions(probabilities, classes, 3)
+        self.assertTrue(np.array_equal(bestK, np.array([1, 3, 0])))
         
 if __name__ == '__main__':
     unittest.main()

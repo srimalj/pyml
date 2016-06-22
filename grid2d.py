@@ -24,12 +24,24 @@ def partition_index(limits, value):
 
     # Fail safe for values in last boundary
     if value == limits[-1]:
-        return len(limits)-1
+        return len(limits)-2
             
     idx = 0
     while not((value >= limits[idx]) and (value < limits[idx + 1])):
         idx = idx + 1
     return idx
+
+################################################################################
+def bestNPredictions(probabilities, classes, n):
+    """
+    Return the best n predicted classes 
+    for the given probabilities
+    """
+    assert(len(probabilities) == len(classes))
+    reverse_sorted_probability_indices = sorted(range(0, len(probabilities)),
+                                                key = lambda idx: probabilities[idx],
+                                                reverse = True)
+    return classes[reverse_sorted_probability_indices[0:n]]
 
 ################################################################################
 class Grid2d():
@@ -69,10 +81,20 @@ class Grid2d():
         return estimator.predict(x.reshape(1,-1))
 
     def predict(self, X):
-        return [self.predict_row(x) for x in X]
+        return np.array([self.predict_row(x) for x in X])
             
     
-     #def predict_best_k(self, X,  k):
+    def predict_best_k_row(self, x,  k):
+        estimator = self.get_estimator(x[0], x[1])
+        probabilities = estimator.predict_proba(x.reshape(1, -1))
+        print "probabilities:"
+        print type(probabilities)
+        print type(estimator.classes_)
+        bestK = bestNPredictions(probabilities.reshape(-1, 1), estimator.classes_, k)
+        return bestK
+
+    def predict_best_k(self, X,  k):
+        return np.array([self.predict_best_k_row(x, k) for x in X])
     # def predict(self, X):
     # def predict_proba(self, X):
     
