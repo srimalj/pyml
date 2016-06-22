@@ -20,6 +20,18 @@ def getCellData(X, y, min0, max0, min1, max1):
     return np.array(Xcell), np.array(ycell)
 
 ################################################################################
+def partition_index(limits, value):
+
+    # Fail safe for values in last boundary
+    if value == limits[-1]:
+        return len(limits)-1
+            
+    idx = 0
+    while not((value >= limits[idx]) and (value < limits[idx + 1])):
+        idx = idx + 1
+    return idx
+
+################################################################################
 class Grid2d():
     
     def __init__(self, limits0, limits1, estimator):
@@ -45,8 +57,22 @@ class Grid2d():
                 print("%d-%d" % (ix, iy))
                 grid["%d-%d" % (ix, iy)] = cell
         self.grid = grid
-      
-        #def predict_best_k(self, X,  k):
+
+
+    def get_estimator(self, x0, x1):
+        ix = partition_index(self.limits0, x0)
+        iy = partition_index(self.limits1, x1)
+        return self.grid["%d-%d" % (ix, iy)]
+    
+    def predict_row(self, x):
+        estimator = self.get_estimator(x[0], x[1])
+        return estimator.predict(x)
+
+    def predict(self, X):
+        [self.predict_row(x) for x in X]
+            
+    
+     #def predict_best_k(self, X,  k):
     # def predict(self, X):
     # def predict_proba(self, X):
     

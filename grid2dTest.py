@@ -15,5 +15,15 @@ class grid2dTest (unittest.TestCase):
         Xcell, ycell = grid2d.getCellData(X, y, 1.0, 1.5, 0.5, 1)
         self.assertEqual(np.linalg.norm(ycell - [2,3]), 0)
 
+    def test_partition_index(self):
+        limits = [0, 0.2, 0.6, 0.8]
+        self.assertEqual(grid2d.partition_index(limits, 0), 0)
+        self.assertEqual(grid2d.partition_index(limits, 0.1), 0)
+        self.assertEqual(grid2d.partition_index(limits, 0.2), 1)
+        self.assertEqual(grid2d.partition_index(limits, 0.65), 2)
+        #self.assertEqual(grid2d.partition_index(limits, 0.8), 2)
+        self.assertEqual(grid2d.partition_index(limits, 0.6), 2)
+        self.assertEqual(grid2d.partition_index(limits, 0.3), 1)
+        
 if __name__ == '__main__':
     unittest.main()
