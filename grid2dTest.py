@@ -21,9 +21,14 @@ class grid2dTest (unittest.TestCase):
         self.assertEqual(grid2d.partition_index(limits, 0.1), 0)
         self.assertEqual(grid2d.partition_index(limits, 0.2), 1)
         self.assertEqual(grid2d.partition_index(limits, 0.65), 2)
-        #self.assertEqual(grid2d.partition_index(limits, 0.8), 2)
+        self.assertEqual(grid2d.partition_index(limits, 0.8), 2)
         self.assertEqual(grid2d.partition_index(limits, 0.6), 2)
         self.assertEqual(grid2d.partition_index(limits, 0.3), 1)
+
+    # def testBestNPredictions(self):
+    #     bestK = grid2d.bestNPredictions([0.1, 0.2, 0.3, 0.4, 0.5], range(0,6), 3)
+    #     print(bestK)
+        #self.assertEqual([0,1,2], [0, 1, 2])
         
 if __name__ == '__main__':
     unittest.main()
