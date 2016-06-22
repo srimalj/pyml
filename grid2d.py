@@ -26,11 +26,12 @@ class Grid2d():
         self.limits0 = limits0
         self.limits1 = limits1
         self.estimator = estimator
-        
+                
     def fit(self, X, y):
 
         xs = self.limits0
         ys = self.limits1
+        grid = {}
         
         for ix in range(0, len(xs)-1):
             for iy in range(0, len(ys)-1):
@@ -40,4 +41,12 @@ class Grid2d():
                       (ix, iy, xs[ix], xs[ix + 1], ys[iy], ys[iy + 1], Xcell.shape[0], len(np.unique(ycell))))
                 cell = sklearn.base.clone(self.estimator)
                 cell.fit(Xcell, ycell)
-                joblib.dump(cell, "cell_%d_%d.pkl" % (ix, iy), compress=True)
+                #joblib.dump(cell, "cell_%d_%d.pkl" % (ix, iy), compress=True)
+                print("%d-%d" % (ix, iy))
+                grid["%d-%d" % (ix, iy)] = cell
+        self.grid = grid
+      
+        #def predict_best_k(self, X,  k):
+    # def predict(self, X):
+    # def predict_proba(self, X):
+    
