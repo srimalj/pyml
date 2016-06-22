@@ -95,6 +95,4 @@ class Grid2d():
 
     def predict_best_k(self, X,  k):
         return np.array([self.predict_best_k_row(x, k) for x in X])
-    # def predict(self, X):
-    # def predict_proba(self, X):
     
