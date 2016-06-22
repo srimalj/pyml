@@ -87,9 +87,6 @@ class Grid2d():
     def predict_best_k_row(self, x,  k):
         estimator = self.get_estimator(x[0], x[1])
         probabilities = estimator.predict_proba(x.reshape(1, -1))
-        print "probabilities:"
-        print type(probabilities)
-        print type(estimator.classes_)
         bestK = bestNPredictions(probabilities.reshape(-1, 1), estimator.classes_, k)
         return bestK
 
