@@ -1,8 +1,23 @@
 import unittest
 import numpy as np
 import grid2d
+from sklearn.neighbors import KNeighborsClassifier
 
-class grid2dTest (unittest.TestCase):
+def data2x2(n):
+    X = np.random.rand(n,2)
+    y = []
+    for x in X:
+        if (0 <= x[0] < 0.5) and (0.0 <= x[1] < 0.5):
+            y.append(1)
+        if (0 <= x[0] < 0.5) and (0.5 <= x[1]):
+            y.append(2)
+        if (0.5 <= x[0]) and (0.0 <= x[1] < 0.5):
+            y.append(3)
+        if (0.5 <= x[0]) and (0.5 <= x[1]):
+            y.append(4)
+    return X, y
+
+class grid2dHelperFunctionsTest (unittest.TestCase):
 
     def testGetCellData(self):
         X = [[1,   2, 3,],
@@ -45,6 +60,23 @@ class grid2dTest (unittest.TestCase):
         classes = np.array([4, 3, 2, 1, 0])
         bestK = grid2d.bestNPredictions(probabilities, classes, 3)
         self.assertTrue(np.array_equal(bestK, np.array([1, 3, 0])))
+
+
+
+class Grid2dTest (unittest.TestCase):
+
+    def test_data2x2(self):
+        X, y = data2x2(100)
+        estimator =  KNeighborsClassifier(n_neighbors=1)
+        grid = grid2d.Grid2d([0, 0.5, 1.0], [0, 0.5, 1.0], estimator)
+        grid.fit(X, y)
+        pred = grid.predict(X)
+        #print pred, y           
+        self.assertTrue(np.array_equal(pred, y))
+        
+
+        
         
 if __name__ == '__main__':
     unittest.main()
+

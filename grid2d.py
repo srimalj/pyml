@@ -81,7 +81,7 @@ class Grid2d():
         return estimator.predict(x.reshape(1,-1))
 
     def predict(self, X):
-        return np.array([self.predict_row(x) for x in X])
+        return np.array([self.predict_row(x) for x in X]).ravel()
             
     
     def predict_best_k_row(self, x,  k):
