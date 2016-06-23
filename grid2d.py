@@ -1,3 +1,8 @@
+"""
+Trains individual estimators for each grid cell by partitioning
+features in the input data/feature matrix
+
+"""
 # Partitions features to a 2D grid and trains a model on each grid cell
 
 import numpy as np
@@ -45,7 +50,12 @@ def bestNPredictions(probabilities, classes, n):
 
 ################################################################################
 class Grid2d():
+    """
+    Trains individual estimators for each grid cell by partitioning the 
+    first two columns (features) in the feature matrix X using the given
+    limits limits0 and limits1.
     
+    """
     def __init__(self, limits0, limits1, estimator):
         self.limits0 = limits0
         self.limits1 = limits1
