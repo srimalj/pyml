@@ -100,6 +100,16 @@ class Grid2d():
         bestK = bestNPredictions(probabilities.reshape(-1, 1), estimator.classes_, k)
         return bestK
 
-    def predict_best_k(self, X,  k):
+    def predict_best_k_old(self, X,  k):
         return np.array([self.predict_best_k_row(x, k) for x in X])
     
+    def predict_best_k_preallocate(self, X,  k):
+        out = np.zeros([X.shape[0], k], dtype=int)
+        for id in range(0, out.shape[0]):
+            preds = self.predict_best_k_row(X[id], k)
+            for j in range(0, len(preds)):
+                out[id][j] = int(preds[j])
+        return out
+
+    def predict_best_k(self, X,  k):
+        return self.predict_best_k_preallocate(X, k)
