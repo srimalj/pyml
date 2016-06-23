@@ -2,6 +2,7 @@ import unittest
 import numpy as np
 import grid2d
 from sklearn.neighbors import KNeighborsClassifier
+import ml_metrics as metrics
 
 def data2x2(n):
     X = np.random.rand(n,2)
@@ -71,8 +72,8 @@ class Grid2dTest (unittest.TestCase):
         grid = grid2d.Grid2d([0, 0.5, 1.0], [0, 0.5, 1.0], estimator)
         grid.fit(X, y)
         pred = grid.predict(X)
-        #print pred, y           
         self.assertTrue(np.array_equal(pred, y))
+        self.assertEqual(metrics.mapk(pred.reshape(-1, 1), np.array(y).reshape(-1, 1), 1), 1.0)
         
 
         
