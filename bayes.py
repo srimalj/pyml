@@ -5,6 +5,14 @@ Bayes based classification models
 import numpy as np
 from sklearn.neighbors.kde import KernelDensity
 
+def priorDistribution(y):
+    labels = np.unique(y)
+    n = len(labels)
+    d = float(len(y))
+    priors = np.zeros(n, dtype=float)
+    for idx in xrange(0, n):
+        priors[idx] = np.sum(y == labels[idx]) / d
+    return priors
 
 class BayesClassifierKDE():
     """
@@ -32,7 +40,7 @@ class BayesClassifierKDE():
             self.cpdf.append(self.kde.fit( (X[y == label, :])) )
 
         # Prior distributions
-        self.prior = priors(y, labels)
+        self.prior = priorDistribution(y)
 
     def predict(X):
         return
