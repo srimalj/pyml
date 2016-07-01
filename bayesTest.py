@@ -29,14 +29,22 @@ class BayesClassifierKDETest (unittest.TestCase):
         X = np.vstack((X1, X2))
         y = np.hstack((np.ones(100), 2 * np.ones(100)))
         bc.fit(X,y)
-        print bc
-        print bc.classes_
-        print bc.prior
-        print bc.cpdf
-
-        print bc.cpdf[0].score(np.array([m1, m2]))
-        print bc.cpdf[1].score(np.array([m1, m2]))
-
+       
+        p1 =  bc.posteriors(m1)
+        self.assertGreater(p1[0], p1[1])
+        p2 =  bc.posteriors(m2)
+        self.assertGreater(p2[1], p2[0])
+        
+    def testPredictk(self):
+        bc = bayes.BayesClassifierKDE()
+        m1 = np.array([100, 0])
+        m2 = np.array([0, 100])
+        X1 = np.random.multivariate_normal(m1, np.eye(2, 2), 100)
+        X2 = np.random.multivariate_normal(m2, np.eye(2, 2), 100)
+        X = np.vstack((X1, X2))
+        y = np.hstack((np.ones(100), 2 * np.ones(100)))
+        bc.fit(X,y)
+        print bc.predictk(np.vstack((m1, m2)), 2)
         
         
         

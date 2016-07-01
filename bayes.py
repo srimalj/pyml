@@ -2,6 +2,7 @@
 Bayes based classification models
 """
 
+import sklearn.base
 import numpy as np
 from sklearn.neighbors.kde import KernelDensity
 
@@ -38,7 +39,9 @@ class BayesClassifierKDE():
         # Conditional probability distributions
         self.cpdf = []
         for label in labels:
-            self.cpdf.append(self.kde.fit( (X[y == label, :])) )
+            kde = sklearn.base.clone(self.kde)
+            kde.fit( X[y == label, :] )
+            self.cpdf.append( kde )
 
         # Prior distributions
         self.prior = np.log(priorDistribution(y))
@@ -56,9 +59,9 @@ class BayesClassifierKDE():
 
     
     def predictk(self, X, k):
-        out = np.zeros(X.shape[0], k)
+        out = np.zeros((X.shape[0], k))
         for row in xrange(0, X.shape[0]):
-            bestIndices = self.classescommon.largestK(self.posteriors(X[row, :]))
+            bestIndices = common.largestK(self.posteriors(X[row, :]))
             out[row, :] = self.classes_[bestIndices]
         return out
 
