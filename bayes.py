@@ -40,7 +40,7 @@ class BayesClassifierKDE():
             self.cpdf.append(self.kde.fit( (X[y == label, :])) )
 
         # Prior distributions
-        self.prior = priorDistribution(y)
+        self.prior = np.log(priorDistribution(y))
 
     def predict(X):
         return
