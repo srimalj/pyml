@@ -69,7 +69,7 @@ class BayesClassifierKDE():
 
     
     def posteriors(self, x):
-        values = np.zeros(len(x))
+        values = np.zeros(len(self.classes_))
         for k in xrange(0, len(self.classes_)):
             values[k] = self.cpdf[k].score(x.reshape(1, -1)) + self.prior[k]
         return values
