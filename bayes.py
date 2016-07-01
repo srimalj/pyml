@@ -5,6 +5,7 @@ Bayes based classification models
 import sklearn.base
 import numpy as np
 from sklearn.neighbors.kde import KernelDensity
+import common
 
 def priorDistribution(y):
     labels = np.unique(y)
@@ -50,18 +51,19 @@ class BayesClassifierKDE():
     def predict(self, X):
         return self.predictk(X, 1).reshape(-1, 1)
 
-    
-    def predict_proba(self, X):
-        out = np.zeros(X.shape[0], len(self.classes_))
-        for row in out:
-            row = self.posteriors(row)
-        return out
+
+    # # This is not exactly probability but scores !
+    # def predict_proba(self, X):
+    #     out = np.zeros(X.shape[0], len(self.classes_))
+    #     for row in out:
+    #         row = self.posteriors(row)
+    #     return out
 
     
     def predictk(self, X, k):
         out = np.zeros((X.shape[0], k))
         for row in xrange(0, X.shape[0]):
-            bestIndices = common.largestK(self.posteriors(X[row, :]))
+            bestIndices = common.largestK(self.posteriors(X[row, :]), k)
             out[row, :] = self.classes_[bestIndices]
         return out
 

@@ -44,8 +44,32 @@ class BayesClassifierKDETest (unittest.TestCase):
         X = np.vstack((X1, X2))
         y = np.hstack((np.ones(100), 2 * np.ones(100)))
         bc.fit(X,y)
-        print bc.predictk(np.vstack((m1, m2)), 2)
         
+        r1 =  bc.predictk(np.vstack((m1, m2)), 1)
+       # print r1
+        self.assertEqual(r1[0], 1)
+        self.assertEqual(r1[1], 2)
+        
+        r2 =  bc.predictk(np.vstack((m1, m2)), 2)
+        self.assertEqual(r2[0][0], 1)
+        self.assertEqual(r2[0][1], 2)
+        self.assertEqual(r2[1][0], 2)
+        self.assertEqual(r2[1][1], 1)
+
+    def testPredict(self):
+        bc = bayes.BayesClassifierKDE()
+        m1 = np.array([100, 0])
+        m2 = np.array([0, 100])
+        X1 = np.random.multivariate_normal(m1, np.eye(2, 2), 100)
+        X2 = np.random.multivariate_normal(m2, np.eye(2, 2), 100)
+        X = np.vstack((X1, X2))
+        y = np.hstack((np.ones(100), 2 * np.ones(100)))
+        bc.fit(X,y)
+        
+        r1 =  bc.predict(np.vstack((m1, m2, m1, m2)))
+        self.assertEqual(len(r1), 4)
+        self.assertEqual(r1[0], 1)
+        self.assertEqual(r1[1], 2)
         
         
 if __name__ == '__main__':
