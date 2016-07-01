@@ -33,6 +33,7 @@ class BayesClassifierKDE():
     def fit(self, X, y):
 
         labels = np.unique(y)
+        self.classes_ = labels
 
         # Conditional probability distributions
         self.cpdf = []
@@ -42,12 +43,16 @@ class BayesClassifierKDE():
         # Prior distributions
         self.prior = np.log(priorDistribution(y))
 
-    def predict(X):
+    def predict(self, X):
         return
 
-    def predict_proba(X):
-        return
+    def predict_proba(self, X):
+        out = np.zeros(X.shape[0], len(self.classes_))
+        for r in xrange(0, X.shape[0]):
+            for c in xrange(0, len(self.classes_)):
+                out[r, c] = self.cpdf[c] + self.prior[c]
+        return out
 
-    def predictk(X):
+    def predictk(self, X):
         return
 
